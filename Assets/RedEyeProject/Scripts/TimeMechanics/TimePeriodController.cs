@@ -5,7 +5,7 @@ using UnityEngine;
 public class TimePeriodController : MonoBehaviour
 {
     public Enum_TimePeriod TimePeriod;
-    
+
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
@@ -22,15 +22,29 @@ public class TimePeriodController : MonoBehaviour
         if (TimePeriod <= Enum_TimePeriod.Night)
         {
             TimePeriod++;
-        }else
-        {
-            TimePeriod=0;
         }
+        else
+        {
+            TimePeriod = 0;
+        }
+
+        OnChangePeriod();
     }
     private void OnChangePeriod()
     {
+        UpdateStores();
         //ChangeAmbience
         //Call Events
-        //Open Close Stores
+    }
+    private void UpdateStores()
+    {
+        StoreEntity store = null;
+        store = FindObjectOfType<StoreEntity>();
+
+        if (store)
+        {
+            store.UpdateStore(store.OpenPeriod.Contains(TimePeriod));
+        }
+        print(store.StoreOpen);
     }
 }
