@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class TimePeriodController : MonoBehaviour
 {
-    public Enum_TimePeriod TimePeriod;
+    public Enum_TimePeriod CurrentTimePeriod;//ACtual world period
+    public List<TimePeriodStruct> PeriodInfo = new List<TimePeriodStruct>();//PeriodInfo
+    public Grid WorldGrid;
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -19,13 +22,13 @@ public class TimePeriodController : MonoBehaviour
     }
     public void ChangeTimePeriod()
     {
-        if (TimePeriod <= Enum_TimePeriod.Night)
+        if (CurrentTimePeriod <= Enum_TimePeriod.Night)
         {
-            TimePeriod++;
+            CurrentTimePeriod++;
         }
         else
         {
-            TimePeriod = 0;
+            CurrentTimePeriod = 0;
         }
 
         OnChangePeriod();
@@ -33,9 +36,26 @@ public class TimePeriodController : MonoBehaviour
     private void OnChangePeriod()
     {
         UpdateStores();
-        //ChangeAmbience
+        UpdateAmbient();
         //Call Events
     }
+    private void UpdateAmbient()
+    {
+        Tilemap[] tilesmaps = WorldGrid.GetComponentsInChildren<Tilemap>();
+        
+        foreach (Tilemap tiles in tilesmaps)
+        {
+            foreach (TimePeriodStruct time in PeriodInfo)
+            {
+                if (time.period == CurrentTimePeriod)
+                {
+                    tiles.color = time.periodColor;
+                }
+            }
+
+        }
+    }
+    //Maybe set this on StoreEntitys Script
     private void UpdateStores()
     {
         StoreEntity store = null;
@@ -43,7 +63,7 @@ public class TimePeriodController : MonoBehaviour
 
         if (store)
         {
-            store.UpdateStore(store.OpenPeriod.Contains(TimePeriod));
+            store.UpdateStore(store.OpenPeriod.Contains(CurrentTimePeriod));
         }
         print(store.StoreOpen);
     }
