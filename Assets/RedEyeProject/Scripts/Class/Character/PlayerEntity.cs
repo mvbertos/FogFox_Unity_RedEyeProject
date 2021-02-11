@@ -6,7 +6,6 @@ public class PlayerEntity : CharacterEntity
 {
     public PlayerInputStruct PlayerInputs;
     private Vector2 moveDirection = new Vector2();
-
     void Update()
     {
         //Receive Movement Input
@@ -41,9 +40,9 @@ public class PlayerEntity : CharacterEntity
             moveDirection.x = 1;
         }
 
-        if (Input.GetKey(PlayerInputs.Dash))
+        if (Input.GetKeyDown(PlayerInputs.Dash))
         {
-            StartCoroutine(OnDash(moveDirection, DashActionTime));
+            StartCoroutine(OnDash(moveDirection, dashActionTime));
             return;
         }
         OnMove(moveDirection);
@@ -54,17 +53,37 @@ public class PlayerEntity : CharacterEntity
         throw new System.NotImplementedException();
     }
 
+    /// <summary>
+    /// makes character dash
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="actionTime"></param>
+    /// <returns></returns>
     protected override IEnumerator OnDash(Vector2 direction, float actionTime)
     {
-        float dashActionTime = Time.time + actionTime;
-        do
+
+        float dashExecutionTime = Time.time + actionTime;
+
+        if (canDash)
         {
+            canDash = false;
 
-            OnMove(direction * DashSpeed);
-            yield return new WaitForEndOfFrame();
-            print("Dahsed");
+            do
+            {
+                print(dashExecutionTime + "/" + Time.time);
+                OnMove(direction * dashSpeed);
+                yield return new WaitForEndOfFrame();
+                print("Dahsed");
 
-        } while (dashActionTime <= actionTime);
+            } while ((Time.time <= dashExecutionTime) == true);
+        }
+        else
+        {
+            dashExecutionTime = 0;
+            yield return new WaitForSeconds(DashCoolDown);
+            canDash = true;
+        }
+
     }
 
     protected override void OnMove(Vector2 direction)

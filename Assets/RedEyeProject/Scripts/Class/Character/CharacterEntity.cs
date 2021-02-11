@@ -3,33 +3,53 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class CharacterEntity : MonoBehaviour, InteractionInterface
+public abstract class CharacterEntity : MonoBehaviour, IInteraction
 {
     //Atributes
+    [Header("Atributes")]
+    [SerializeField]
     protected float lP = 5;
+    [SerializeField]
     protected float maxLP = 5;
+    [SerializeField]
     protected float minimumLP = 0;
+    [SerializeField]
     protected float stamina = 5;
+    [SerializeField]
     protected float maxStamina = 5;
+    [SerializeField]
     protected float mana = 5;
+    [SerializeField]
     protected float maxMana = 5;
 
 
     //Movementation
+    [Header("Movementation")]
+    [SerializeField]
     protected float moveSpeed = 5;
-    protected float DashSpeed = 7;
-    protected float DashActionTime = 2;
+
+    [Header("Dash")]
+    [SerializeField]
+    protected float dashSpeed = 7;
+    [SerializeField]
+    protected float dashActionTime = 2;
+    [SerializeField]
+    protected float DashCoolDown = 2;
+    protected bool canDash = true;
 
     //Physics
     protected Rigidbody2D rigidbody;
-    public Rigidbody2D Rigidbody{
-        get{
+    public Rigidbody2D Rigidbody
+    {
+        get
+        {
             return rigidbody;
         }
     }
 
     //Default Methods
-    private void Awake() {
+    private void Awake()
+    {
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -43,8 +63,10 @@ public abstract class CharacterEntity : MonoBehaviour, InteractionInterface
     /// <summary>
     /// It will verify if character is dead
     /// </summary>
-    protected virtual void VerifyDeath(){ //it will verify character is dead or not
-        if(lP<minimumLP){
+    protected virtual void VerifyDeath()
+    { //it will verify character is dead or not
+        if (lP < minimumLP)
+        {
             print("Dead");
         }
     }
@@ -54,7 +76,8 @@ public abstract class CharacterEntity : MonoBehaviour, InteractionInterface
     /// <param name="LifePoints"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public virtual float ReduceLP(float LifePoints, float value){
+    public virtual float ReduceLP(float LifePoints, float value)
+    {
         LifePoints -= value;
         VerifyDeath();
 
@@ -69,6 +92,8 @@ public abstract class CharacterEntity : MonoBehaviour, InteractionInterface
 
     public virtual void OnInteract()
     {
-        throw new System.NotImplementedException();
+        //Get objects on range
+        //If has IInteraction Interface
+        //Execute interaction
     }
 }

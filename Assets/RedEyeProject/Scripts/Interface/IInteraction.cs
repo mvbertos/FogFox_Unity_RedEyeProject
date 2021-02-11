@@ -1,4 +1,4 @@
-public interface InteractionInterface
+public interface IInteraction
 {
     /// <summary>
     /// when object start interaction with something...
