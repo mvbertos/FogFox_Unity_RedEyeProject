@@ -6,9 +6,18 @@ using UnityEngine.Tilemaps;
 public class TimePeriodController : MonoBehaviour
 {
     public Enum_TimePeriod CurrentTimePeriod;//ACtual world period
-    public List<TimePeriodStruct> PeriodInfo = new List<TimePeriodStruct>();//PeriodInfo
-    public Grid WorldGrid;
+    public List<TimePeriodStruct> m_PeriodInfo = new List<TimePeriodStruct>();//PeriodInfo
+    private Dictionary<Enum_TimePeriod, TimePeriodStruct> m_PeriodInfoDictionary = new Dictionary<Enum_TimePeriod, TimePeriodStruct>();
+    public GameObject worldGrid;//Focused on filter the colors of the world
 
+    private void Start() {
+
+        //Load m_PeriodInfoDictionary
+        foreach (TimePeriodStruct item in m_PeriodInfo)
+        {
+            m_PeriodInfoDictionary.Add(item.period,item);
+        }
+    }
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
@@ -20,6 +29,10 @@ public class TimePeriodController : MonoBehaviour
             ChangeTimePeriod();
         }
     }
+    /// <summary>
+    /// Change world period
+    /// Morning,Day,Night,Dawn
+    /// </summary>
     public void ChangeTimePeriod()
     {
         if (CurrentTimePeriod <= Enum_TimePeriod.Night)
@@ -33,28 +46,33 @@ public class TimePeriodController : MonoBehaviour
 
         OnChangePeriod();
     }
+    /// <summary>
+    /// update game world after change period
+    /// Morning,Day,Night,Dawn
+    /// </summary>
     private void OnChangePeriod()
     {
         UpdateStores();
         UpdateAmbient();
         //Call Events
     }
+
+    /// <summary>
+    /// It will update ambient PalletColor
+    /// Reminder - Think about change sprite too
+    /// </summary>
     private void UpdateAmbient()
     {
-        Tilemap[] tilesmaps = WorldGrid.GetComponentsInChildren<Tilemap>();
-        
-        foreach (Tilemap tiles in tilesmaps)
-        {
-            foreach (TimePeriodStruct time in PeriodInfo)
-            {
-                if (time.period == CurrentTimePeriod)
-                {
-                    tiles.color = time.periodColor;
-                }
-            }
 
-        }
+        worldGrid.TryGetComponent<SpriteRenderer>(out SpriteRenderer worldPallet);
+
+        if (!worldPallet) { return; } // Check if worldPallet is null.
+
+        m_PeriodInfoDictionary.TryGetValue(CurrentTimePeriod,out TimePeriodStruct periodStruct);
+
+        worldPallet.color = periodStruct.periodColor;
     }
+
     //Maybe set this on StoreEntitys Script
     private void UpdateStores()
     {

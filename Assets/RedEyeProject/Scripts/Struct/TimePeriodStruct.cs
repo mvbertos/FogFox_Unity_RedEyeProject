@@ -7,4 +7,5 @@ public class TimePeriodStruct
 {
     public Enum_TimePeriod period;
     public Color periodColor;
+    public Sprite periodSprite;
 }
