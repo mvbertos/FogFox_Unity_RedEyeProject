@@ -1,9 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
+[RequireComponent(typeof(AIPath))]
+[RequireComponent(typeof(AIDestinationSetter))]
 public class NpcEntity : CharacterEntity
 {
+    private AIPath _AIPath;
+    private AIDestinationSetter _AIDestinationSetter;
+
+    private void Start(){
+        _AIPath = gameObject.GetComponent<AIPath>();
+        _AIDestinationSetter = gameObject.GetComponent<AIDestinationSetter>();
+    }
+    
     protected override void OnAttack()
     {
         throw new System.NotImplementedException();
