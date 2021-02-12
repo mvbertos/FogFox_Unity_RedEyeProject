@@ -9,4 +9,5 @@ public class PlayerInputStruct
     public KeyCode MoveLeft;
     public KeyCode MoveRight;
     public KeyCode Dash;
+    public KeyCode Interact;
 }

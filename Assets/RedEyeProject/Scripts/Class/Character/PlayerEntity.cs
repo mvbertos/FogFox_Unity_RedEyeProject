@@ -45,6 +45,10 @@ public class PlayerEntity : CharacterEntity
             StartCoroutine(OnDash(moveDirection, dashActionTime));
             return;
         }
+
+        if(Input.GetKeyDown(PlayerInputs.Interact)){
+            OnInteract();
+        }
         OnMove(moveDirection);
     }
 
