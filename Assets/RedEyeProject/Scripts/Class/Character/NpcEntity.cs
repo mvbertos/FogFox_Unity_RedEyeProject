@@ -20,6 +20,7 @@ public class NpcEntity : CharacterEntity
         throw new System.NotImplementedException();
     }
 
+
     protected override IEnumerator OnDash(Vector2 direction, float actionTime)
     {
         throw new System.NotImplementedException();

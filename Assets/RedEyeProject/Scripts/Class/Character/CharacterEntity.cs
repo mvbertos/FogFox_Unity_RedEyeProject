@@ -56,7 +56,10 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     //Default Methods
     private void Awake()
     {
+        //Rigidbody 2D
         rigidbody = GetComponent<Rigidbody2D>();
+        rigidbody.gravityScale = 0;
+        rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     //Abstract Methods to instantiate.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class TimePeriodStruct 
+public class Struct_TimePeriod 
 {
     public Enum_TimePeriod period;
     public Color periodColor;

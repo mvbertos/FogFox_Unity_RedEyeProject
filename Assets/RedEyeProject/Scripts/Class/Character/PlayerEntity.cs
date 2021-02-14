@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerEntity : CharacterEntity
 {
-    public PlayerInputStruct PlayerInputs;
+    public Struct_PlayerInput PlayerInputs; 
     private Vector2 moveDirection = new Vector2();
     void Update()
     {

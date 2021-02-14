@@ -6,14 +6,14 @@ using UnityEngine.Tilemaps;
 public class TimePeriodController : MonoBehaviour
 {
     public Enum_TimePeriod CurrentTimePeriod;//ACtual world period
-    public List<TimePeriodStruct> m_PeriodInfo = new List<TimePeriodStruct>();//PeriodInfo
-    private Dictionary<Enum_TimePeriod, TimePeriodStruct> m_PeriodInfoDictionary = new Dictionary<Enum_TimePeriod, TimePeriodStruct>();
+    public List<Struct_TimePeriod> m_PeriodInfo = new List<Struct_TimePeriod>();//PeriodInfo
+    private Dictionary<Enum_TimePeriod, Struct_TimePeriod> m_PeriodInfoDictionary = new Dictionary<Enum_TimePeriod, Struct_TimePeriod>();
     public GameObject worldGrid;//Focused on filter the colors of the world
 
     private void Start() {
 
         //Load m_PeriodInfoDictionary
-        foreach (TimePeriodStruct item in m_PeriodInfo)
+        foreach (Struct_TimePeriod item in m_PeriodInfo)
         {
             m_PeriodInfoDictionary.Add(item.period,item);
         }
@@ -68,7 +68,7 @@ public class TimePeriodController : MonoBehaviour
 
         if (!worldPallet) { return; } // Check if worldPallet is null.
 
-        m_PeriodInfoDictionary.TryGetValue(CurrentTimePeriod,out TimePeriodStruct periodStruct);
+        m_PeriodInfoDictionary.TryGetValue(CurrentTimePeriod,out Struct_TimePeriod periodStruct);
 
         worldPallet.color = periodStruct.periodColor;
     }
