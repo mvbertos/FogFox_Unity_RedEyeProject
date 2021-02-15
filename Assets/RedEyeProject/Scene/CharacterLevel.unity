@@ -308,7 +308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 2
   radius: 0.5
-  height: 2
+  height: 1
   repathRate: 0.5
   canSearch: 1
   canMove: 1
@@ -318,8 +318,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   centerOffsetCompatibility: NaN
-  orientation: 0
-  enableRotation: 1
+  orientation: 1
+  enableRotation: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
   rotationSpeed: 360
@@ -372,6 +372,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   target: {fileID: 0}
+--- !u!114 &995023246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 995023242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2273e58232fc002e9ca48e7b809e570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TaskList:
+  - TaskType: 0
+    State: 0
+    Period: 0
+    Position: {fileID: 965698020}
+    TaskObject: {fileID: 965698018}
+  - TaskType: 0
+    State: 0
+    Period: 0
+    Position: {fileID: 2087585661}
+    TaskObject: {fileID: 2087585657}
 --- !u!1 &1241127848
 GameObject:
   m_ObjectHideFlags: 0
@@ -2778,6 +2801,16 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &2087585657 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4012334086150885008, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+  m_PrefabInstance: {fileID: 4012334086315241232}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2087585661 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4012334086150885009, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+  m_PrefabInstance: {fileID: 4012334086315241232}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2102261716
 GameObject:
   m_ObjectHideFlags: 0

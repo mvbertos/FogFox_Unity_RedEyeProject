@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class Struct_PlayerInput
+public struct Struct_PlayerInput
 {
     [Header("Movementation")]
     public KeyCode MoveUp;
