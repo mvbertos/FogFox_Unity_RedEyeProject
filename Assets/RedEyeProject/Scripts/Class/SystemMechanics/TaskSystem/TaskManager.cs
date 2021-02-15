@@ -5,7 +5,7 @@ using System.Linq;
 public class TaskManager : MonoBehaviour
 {
     public List<Struct_Task> m_TaskList = new List<Struct_Task>();
-
+    private Struct_Task managerCurrentTask = new Struct_Task();
     /// <summary>
     /// Return the first task in queue
     /// </summary>
@@ -14,16 +14,19 @@ public class TaskManager : MonoBehaviour
     {
         Struct_Task currentTask = m_TaskList.ElementAt(0);
         currentTask.State = Enum_TaskState.Executing;
+        managerCurrentTask = currentTask;
         return currentTask;
     }
     /// <summary>
     /// checks if the current task is completed
     /// </summary>
-    public void TaskValidation()
+    public void TaskValidation(Struct_Task currentTask)
     {
-        Struct_Task currentTask = m_TaskList.ElementAt(0);
         if (currentTask.State == Enum_TaskState.Completed)
         {
+            print(managerCurrentTask + "/" + currentTask);
+            if (managerCurrentTask.ID == currentTask.ID) { print("It's Equal"); }
+
             NextTask(currentTask);
         }
     }
@@ -32,9 +35,21 @@ public class TaskManager : MonoBehaviour
     /// TODO: Verify if task period match with the current period, if dont try get next
     /// </summary>
     /// <param name="currentTask"></param>
-    public void NextTask(Struct_Task currentTask)
+    private Struct_Task NextTask(Struct_Task currentTask)
     {
-        if (m_TaskList.Contains(currentTask))
-            m_TaskList.Remove(currentTask);
+
+        foreach (Struct_Task task in m_TaskList)
+        {
+            if (task.ID == currentTask.ID)
+            {
+                m_TaskList.Remove(currentTask);
+
+                print(task.TaskObject + "/" + m_TaskList.IndexOf(task).ToString() + "/" + task.State);
+
+                return m_TaskList.ElementAt(0);
+            }
+        }
+
+        return new Struct_Task();
     }
 }

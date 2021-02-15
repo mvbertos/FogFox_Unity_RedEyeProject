@@ -312,7 +312,7 @@ MonoBehaviour:
   repathRate: 0.5
   canSearch: 1
   canMove: 1
-  maxSpeed: 1
+  maxSpeed: 5
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -385,12 +385,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TaskList:
-  - TaskType: 0
+  - ID: 0
+    TaskType: 0
     State: 0
     Period: 0
     Position: {fileID: 965698020}
     TaskObject: {fileID: 965698018}
-  - TaskType: 0
+  - ID: 1
+    TaskType: 0
     State: 0
     Period: 0
     Position: {fileID: 2087585661}

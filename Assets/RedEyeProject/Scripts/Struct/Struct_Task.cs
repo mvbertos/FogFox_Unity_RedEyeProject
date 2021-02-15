@@ -4,6 +4,7 @@ using UnityEngine;
 public struct Struct_Task
 {
     [Header("Task Information")]
+    public int ID;
     public Enum_TaskType TaskType;
     public Enum_TaskState State;
     public Enum_TimePeriod Period;

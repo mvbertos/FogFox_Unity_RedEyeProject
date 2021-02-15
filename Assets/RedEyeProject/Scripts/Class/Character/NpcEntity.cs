@@ -10,41 +10,48 @@ public class NpcEntity : CharacterEntity
 {
     private AIPath _AIPath;
     private AIDestinationSetter _AIDestinationSetter;
-    private TaskManager _taskManager;
+    private TaskManager _TaskManager;
 
     private void Start()
     {
         _AIPath = gameObject.GetComponent<AIPath>();
         _AIDestinationSetter = gameObject.GetComponent<AIDestinationSetter>();
-        _taskManager = gameObject.GetComponent<TaskManager>();
-        
+        _TaskManager = gameObject.GetComponent<TaskManager>();
+
         //TODO: create sequence to get next task after the first is done.
-        StartCoroutine(ExecuteCurrentTask(_taskManager.GetCurrentTask()));
+        StartCoroutine(ExecuteCurrentTask(_TaskManager.GetCurrentTask()));
     }
 
     private IEnumerator ExecuteCurrentTask(Struct_Task task)
     {
-        switch (task.TaskType)
+        do
         {
-            case Enum_TaskType.InteractWith:
-                _AIDestinationSetter.target = task.Position;
-                do
-                {
-                    if (!task.TaskObject.TryGetComponent<IInteraction>(out IInteraction io)) { yield return null; }
-
-                    if (InteractableObjects(interactionPoint, interactionRange) == io)
+            switch (task.TaskType)
+            {
+                case Enum_TaskType.InteractWith:
+                    _AIDestinationSetter.target = task.Position;
+                    do
                     {
-                        io.OnBeingInteract();
-                        task.State = Enum_TaskState.Completed;
-                    }
+                        if (!task.TaskObject.TryGetComponent<IInteraction>(out IInteraction io)) { yield return null; }
 
-                    yield return new WaitForEndOfFrame();
+                        if (InteractableObjects(interactionPoint, interactionRange) == io)
+                        {
+                            io.OnBeingInteract();
+                            task.State = Enum_TaskState.Completed;
+                            _TaskManager.TaskValidation(task);
+                        }
 
-                } while (task.State != Enum_TaskState.Completed);
-                break;
-            default:
-                break;
-        }
+                        yield return new WaitForEndOfFrame();
+
+                    } while (task.State != Enum_TaskState.Completed);
+                    break;
+                default:
+                    break;
+            }
+
+            task = _TaskManager.GetCurrentTask();
+            yield return new WaitForEndOfFrame();
+        } while (true);
     }
     protected override void OnAttack()
     {
