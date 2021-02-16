@@ -1,5 +1,7 @@
 using UnityEngine;
 public enum Enum_TaskType
 {
-    InteractWith
+    InteractWith = 0,
+    Idle = 999
+
 }

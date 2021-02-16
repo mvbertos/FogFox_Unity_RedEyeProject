@@ -18,6 +18,8 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     [SerializeField]
     protected float maxStamina = 5;
     [SerializeField]
+    protected float minimumStamina = 5;
+    [SerializeField]
     protected float mana = 5;
     [SerializeField]
     protected float maxMana = 5;
@@ -25,6 +27,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
 
     //Movementation
     [Header("Movementation")]
+    protected Enum_CharacterState characterState;
     [SerializeField]
     protected float moveSpeed = 5;
 
@@ -60,15 +63,20 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         rigidbody = GetComponent<Rigidbody2D>();
         rigidbody.gravityScale = 0;
         rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        //Setting up character state
+        characterState = Enum_CharacterState.Idle;
     }
 
     //Abstract Methods to instantiate.
+
     protected abstract void OnMove(Vector2 direction);
     protected abstract void OnAttack();
     protected abstract void OnUseSkill();
     protected abstract IEnumerator OnDash(Vector2 direction, float actionTime);
 
     //Virtual methods to instance
+
     /// <summary>
     /// It will verify if character is dead
     /// </summary>
@@ -77,6 +85,19 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         if (lP < minimumLP)
         {
             print("Dead");
+        }
+    }
+
+    /// <summary>
+    /// Verify if can use Stamina
+    /// </summary>
+    protected virtual bool VerifyStamina(float staminaPoints, float value)
+    {
+        if ((staminaPoints -= value) >= minimumStamina)
+        {
+            return true;
+        }else{
+            return false;
         }
     }
     /// <summary>
@@ -91,6 +112,18 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         VerifyDeath();
 
         return LifePoints;
+    }
+
+    /// <summary>
+    /// Reduce Stamina and verify if you can do future dash or skills that use stamina
+    /// </summary>
+    /// <param name="StaminaPoints"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public virtual float ReduceStamina(float StaminaPoints, float value)
+    {
+        StaminaPoints -= value;
+        return StaminaPoints;
     }
     /// <summary>
     /// Get every object in range

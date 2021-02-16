@@ -169,7 +169,7 @@ MonoBehaviour:
   moveSpeed: 5
   dashSpeed: 7
   dashActionTime: 0.1
-  DashCoolDown: 1
+  DashCoolDown: 0.1
   interactionPoint: {fileID: 4012334085431534893}
   interactionRange: 1
   PlayerInputs:

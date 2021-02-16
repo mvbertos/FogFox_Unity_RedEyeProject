@@ -14,11 +14,17 @@ public class NpcEntity : CharacterEntity
 
     private void Start()
     {
+        //Initializing Components
         _AIPath = gameObject.GetComponent<AIPath>();
         _AIDestinationSetter = gameObject.GetComponent<AIDestinationSetter>();
         _TaskManager = gameObject.GetComponent<TaskManager>();
 
-        //TODO: create sequence to get next task after the first is done.
+        //AIPAth Configuration
+        _AIPath.maxSpeed = moveSpeed;
+        _AIPath.enableRotation = false;
+        _AIPath.orientation = OrientationMode.YAxisForward;
+
+        //Tasks System
         StartCoroutine(ExecuteCurrentTask(_TaskManager.GetCurrentTask()));
     }
 
@@ -28,11 +34,16 @@ public class NpcEntity : CharacterEntity
         {
             switch (task.TaskType)
             {
+                //Interact With Something
                 case Enum_TaskType.InteractWith:
+
                     _AIDestinationSetter.target = task.Position;
-                    do
+
+
+                    do // While task state != completed do:
                     {
-                        if (!task.TaskObject.TryGetComponent<IInteraction>(out IInteraction io)) { yield return null; }
+                        if (task.TaskObject == null) { yield return null; } //TaskObject is null
+                        if (!task.TaskObject.TryGetComponent<IInteraction>(out IInteraction io)) { yield return null; }//Task object has IInteraction interface
 
                         if (InteractableObjects(interactionPoint, interactionRange) == io)
                         {
@@ -44,6 +55,16 @@ public class NpcEntity : CharacterEntity
                         yield return new WaitForEndOfFrame();
 
                     } while (task.State != Enum_TaskState.Completed);
+                    break;
+                case Enum_TaskType.Idle:
+                    _AIDestinationSetter.target = task.Position;
+
+                    do
+                    {
+
+                        yield return new WaitForEndOfFrame();
+
+                    } while (_TaskManager.GetCurrentTask().TaskType == Enum_TaskType.Idle);
                     break;
                 default:
                     break;

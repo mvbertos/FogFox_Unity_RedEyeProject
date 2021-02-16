@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerEntity : CharacterEntity
 {
-    public Struct_PlayerInput PlayerInputs; 
+    public Struct_PlayerInput PlayerInputs;
     private Vector2 moveDirection = new Vector2();
+
     void Update()
     {
         //Receive Movement Input
@@ -46,7 +47,8 @@ public class PlayerEntity : CharacterEntity
             return;
         }
 
-        if(Input.GetKeyDown(PlayerInputs.Interact)){
+        if (Input.GetKeyDown(PlayerInputs.Interact))
+        {
             OnInteract();
         }
         OnMove(moveDirection);
@@ -65,19 +67,19 @@ public class PlayerEntity : CharacterEntity
     /// <returns></returns>
     protected override IEnumerator OnDash(Vector2 direction, float actionTime)
     {
-
+        Enum_CharacterState defaultState = characterState;
         float dashExecutionTime = Time.time + actionTime;
 
-        if (canDash)
+        if (!canDash) { yield return null; }
+
+        if (characterState != Enum_CharacterState.Dashing)
         {
-            canDash = false;
 
             do
             {
-                print(dashExecutionTime + "/" + Time.time);
+                characterState = Enum_CharacterState.Dashing;
                 OnMove(direction * dashSpeed);
                 yield return new WaitForEndOfFrame();
-                print("Dahsed");
 
             } while ((Time.time <= dashExecutionTime) == true);
         }
@@ -85,7 +87,7 @@ public class PlayerEntity : CharacterEntity
         {
             dashExecutionTime = 0;
             yield return new WaitForSeconds(DashCoolDown);
-            canDash = true;
+            characterState = defaultState;
         }
 
     }
@@ -95,6 +97,8 @@ public class PlayerEntity : CharacterEntity
         direction *= moveSpeed;
 
         rigidbody.velocity = direction;
+
+        characterState = Enum_CharacterState.Walking;
     }
 
     protected override void OnUseSkill()
