@@ -18,16 +18,22 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     [SerializeField]
     protected float maxStamina = 5;
     [SerializeField]
-    protected float minimumStamina = 5;
+    protected float minimumStamina = 0;
     [SerializeField]
     protected float mana = 5;
     [SerializeField]
     protected float maxMana = 5;
 
+    [Header("Regen Values")]
+    [SerializeField]
+    protected float staminaRegen = 2;
+    [SerializeField]
+    protected float staminaRegenTime = 1;
+
 
     //Movementation
-    [Header("Movementation")]
     protected Enum_CharacterState characterState;
+    [Header("Movementation")]
     [SerializeField]
     protected float moveSpeed = 5;
 
@@ -37,6 +43,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     [SerializeField]
     protected float dashActionTime = 2;
     [SerializeField]
+    protected float dashCost = 2;
     protected float DashCoolDown = 2;
     protected bool canDash = true;
 
@@ -66,6 +73,9 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
 
         //Setting up character state
         characterState = Enum_CharacterState.Idle;
+
+        //Start Regen
+        StartCoroutine(RegenStamina(staminaRegenTime));
     }
 
     //Abstract Methods to instantiate.
@@ -88,18 +98,8 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         }
     }
 
-    /// <summary>
-    /// Verify if can use Stamina
-    /// </summary>
-    protected virtual bool VerifyStamina(float staminaPoints, float value)
-    {
-        if ((staminaPoints -= value) >= minimumStamina)
-        {
-            return true;
-        }else{
-            return false;
-        }
-    }
+    //Health
+
     /// <summary>
     /// It will reduce lifepoints and then verify if character is dead
     /// </summary>
@@ -114,8 +114,48 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         return LifePoints;
     }
 
+    //Stamina 
+
+    protected virtual IEnumerator RegenStamina(float regenTime)
+    {
+        do
+        {
+            stamina = AddStamina(stamina, staminaRegen);
+            yield return new WaitForSeconds(regenTime);
+        } while (true);
+    }
+    protected virtual float AddStamina(float staminaPoints, float value)
+    {
+
+        if (staminaPoints + value <= maxStamina)
+        {
+            staminaPoints += value;
+        }
+        else
+        {
+            staminaPoints = maxStamina;
+        }
+
+        return staminaPoints;
+    }
+
     /// <summary>
-    /// Reduce Stamina and verify if you can do future dash or skills that use stamina
+    /// Verify if can use Stamina
+    /// </summary>
+    protected virtual bool VerifyStamina(float staminaPoints, float value)
+    {
+        if ((staminaPoints - value) >= minimumStamina)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Reduce Stamina 
     /// </summary>
     /// <param name="StaminaPoints"></param>
     /// <param name="value"></param>

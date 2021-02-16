@@ -70,11 +70,10 @@ public class PlayerEntity : CharacterEntity
         Enum_CharacterState defaultState = characterState;
         float dashExecutionTime = Time.time + actionTime;
 
-        if (!canDash) { yield return null; }
-
-        if (characterState != Enum_CharacterState.Dashing)
+        if (characterState != Enum_CharacterState.Dashing && VerifyStamina(stamina, dashCost))//Start Dash
         {
-
+            stamina = ReduceStamina(stamina, dashCost);
+            print(stamina);
             do
             {
                 characterState = Enum_CharacterState.Dashing;
@@ -83,7 +82,7 @@ public class PlayerEntity : CharacterEntity
 
             } while ((Time.time <= dashExecutionTime) == true);
         }
-        else
+        else //End Dash
         {
             dashExecutionTime = 0;
             yield return new WaitForSeconds(DashCoolDown);
