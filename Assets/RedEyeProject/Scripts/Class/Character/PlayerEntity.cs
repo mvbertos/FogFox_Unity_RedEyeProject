@@ -12,7 +12,7 @@ public class PlayerEntity : CharacterEntity
         //Receive Movement Input
         ReceivePlayeMovementInput();
     }
-
+    
     /// <summary>
     /// This method will update moveDirection input and then execute OnMove Method
     /// </summary>

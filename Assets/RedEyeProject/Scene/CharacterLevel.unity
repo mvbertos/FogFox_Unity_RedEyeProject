@@ -2798,14 +2798,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -833072024693229235, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
-      propertyPath: orientation
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -833072024693229235, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
-      propertyPath: enableRotation
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 980373697816993192, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -2853,10 +2845,6 @@ PrefabInstance:
     - target: {fileID: 980373697816993203, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
       propertyPath: m_Name
       value: NPC
-      objectReference: {fileID: 0}
-    - target: {fileID: 980373697816993204, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
-      propertyPath: moveSpeed
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 980373697816993207, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
       propertyPath: m_TaskList.Array.data[0].Position
@@ -2929,6 +2917,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4012334086150885009, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: minimumStamina
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
