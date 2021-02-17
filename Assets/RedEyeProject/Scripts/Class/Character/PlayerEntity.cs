@@ -42,7 +42,7 @@ public class PlayerEntity : CharacterEntity
 
         if (Input.GetKeyDown(PlayerInputs.Dash))
         {
-            foreach (Skill skill in m_SkillList)
+            foreach (Skill skill in m_InstantiatedSkillList)
             {
                 if (skill.TryGetComponent<Skill_Dash>(out Skill_Dash dash)) { OnDash(dash); }
             }
@@ -78,7 +78,6 @@ public class PlayerEntity : CharacterEntity
 
     public override void OnDash(Skill dashSkill)
     {
-        print("hello");
         StartCoroutine(dashSkill.GetComponent<Skill_Dash>().OnDash(this.gameObject.GetComponent<CharacterEntity>()));
     }
 }

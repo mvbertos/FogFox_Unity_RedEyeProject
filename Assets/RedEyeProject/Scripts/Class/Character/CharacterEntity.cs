@@ -33,7 +33,10 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
 
     //Combat
     [Header("Combat")]
+    public Transform SkillParent;
     public List<Skill> m_SkillList = new List<Skill>();
+    [HideInInspector]
+    public List<Skill> m_InstantiatedSkillList = new List<Skill>();
 
 
     //Movementation
@@ -73,11 +76,20 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         rigidbody.gravityScale = 0;
         rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        //Setting up character state
+        //Setting up character
         characterState = Enum_CharacterState.Idle;
+        SetupSkillList();
 
         //Start Regen
         StartCoroutine(RegenAttribute(staminaRegenTime, staminaRegen, 2));
+    }
+    private void SetupSkillList()
+    {
+        foreach (Skill item in m_SkillList)
+        {
+            print(item);
+            m_InstantiatedSkillList.Add(Instantiate<Skill>(item,SkillParent));
+        }
     }
 
     //Abstract Methods to instantiate.
@@ -121,7 +133,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
                     AddAttributeValue(staminaRegen, 2);
                     yield return new WaitForSeconds(regenTime);
                 } while (true);
-                break;
+
             case 3:
                 //Decide What to do with Mana if nedded
                 break;

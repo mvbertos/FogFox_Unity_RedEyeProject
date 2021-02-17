@@ -13,4 +13,5 @@ public abstract class Skill : MonoBehaviour
 
     //Execution
     public Sprite RangeSprite;
+    protected bool executing = false;
 }
