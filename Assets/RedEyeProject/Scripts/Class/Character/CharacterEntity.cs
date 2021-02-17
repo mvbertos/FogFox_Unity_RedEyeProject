@@ -23,6 +23,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     protected float mana = 5;
     [SerializeField]
     protected float maxMana = 5;
+    protected float minimumMana = 0;
 
     [Header("Regen Values")]
     [SerializeField]
@@ -30,22 +31,23 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     [SerializeField]
     protected float staminaRegenTime = 1;
 
+    //Combat
+    [Header("Combat")]
+    public List<Skill> m_SkillList = new List<Skill>();
+
 
     //Movementation
-    protected Enum_CharacterState characterState;
+    [HideInInspector]
+    public Enum_CharacterState characterState;
+
     [Header("Movementation")]
     [SerializeField]
     protected float moveSpeed = 5;
-
-    [Header("Dash")]
-    [SerializeField]
-    protected float dashSpeed = 7;
-    [SerializeField]
-    protected float dashActionTime = 2;
-    [SerializeField]
-    protected float dashCost = 2;
-    protected float DashCoolDown = 2;
-    protected bool canDash = true;
+    protected Vector2 _moveDirection = new Vector2();
+    public Vector2 moveDirection
+    {
+        get { return _moveDirection; }
+    }
 
     [Header("Interaction")]
     [SerializeField]
@@ -75,15 +77,15 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         characterState = Enum_CharacterState.Idle;
 
         //Start Regen
-        StartCoroutine(RegenStamina(staminaRegenTime));
+        StartCoroutine(RegenAttribute(staminaRegenTime, staminaRegen, 2));
     }
 
     //Abstract Methods to instantiate.
 
-    protected abstract void OnMove(Vector2 direction);
-    protected abstract void OnAttack();
-    protected abstract void OnUseSkill();
-    protected abstract IEnumerator OnDash(Vector2 direction, float actionTime);
+    public abstract void OnMove(Vector2 direction);
+    public abstract void OnAttack();
+    public abstract void OnUseSkill();
+    public abstract void OnDash(Skill dashSkill);
 
     //Virtual methods to instance
 
@@ -98,53 +100,101 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         }
     }
 
-    //Health
-
     /// <summary>
-    /// It will reduce lifepoints and then verify if character is dead
+    /// Regen atribute to it max value as possible
+    /// 1)LP
+    /// 2)Stamina
+    /// 3)Mana
     /// </summary>
-    /// <param name="LifePoints"></param>
-    /// <param name="value"></param>
+    /// <param name="regenTime"></param>
     /// <returns></returns>
-    public virtual float ReduceLP(float LifePoints, float value)
+    protected virtual IEnumerator RegenAttribute(float regenTime, float value, int op)
     {
-        LifePoints -= value;
-        VerifyDeath();
-
-        return LifePoints;
-    }
-
-    //Stamina 
-
-    protected virtual IEnumerator RegenStamina(float regenTime)
-    {
-        do
+        switch (op)
         {
-            stamina = AddStamina(stamina, staminaRegen);
-            yield return new WaitForSeconds(regenTime);
-        } while (true);
-    }
-    protected virtual float AddStamina(float staminaPoints, float value)
-    {
-
-        if (staminaPoints + value <= maxStamina)
-        {
-            staminaPoints += value;
-        }
-        else
-        {
-            staminaPoints = maxStamina;
+            case 1:
+                //Decide What to do with LP if nedded
+                break;
+            case 2:
+                do
+                {
+                    AddAttributeValue(staminaRegen, 2);
+                    yield return new WaitForSeconds(regenTime);
+                } while (true);
+                break;
+            case 3:
+                //Decide What to do with Mana if nedded
+                break;
+            default:
+                break;
         }
 
-        return staminaPoints;
+
     }
 
     /// <summary>
-    /// Verify if can use Stamina
+    /// Incremend certain amout to the seleced value
+    /// 1)LP
+    /// 2)Stamina
+    /// 3)Mana
     /// </summary>
-    protected virtual bool VerifyStamina(float staminaPoints, float value)
+    /// <param name="value"></param>
+    /// <param name="op"></param>
+    protected virtual void AddAttributeValue(float value, int op)
     {
-        if ((staminaPoints - value) >= minimumStamina)
+        switch (op)
+        {
+            case 1:
+                break;
+            case 2:
+                if (stamina + value <= maxStamina)
+                {
+                    stamina += value;
+                }
+                else
+                {
+                    stamina = maxStamina;
+                }
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Verify atributes
+    /// 1)LP
+    /// 2)Stamina
+    /// 3)Mana
+    /// </summary>
+    public virtual bool VerifyAtribute(float value, int op)
+    {
+        float valueToValidate = 0;
+        float minValueToValidate = 0;
+
+        //Initialize validation var
+        switch (op)
+        {
+            case 1:
+                valueToValidate = lP;
+                minValueToValidate = minimumLP;
+                break;
+            case 2:
+                valueToValidate = stamina;
+                minValueToValidate = minimumStamina;
+                break;
+            case 3:
+                valueToValidate = mana;
+                minValueToValidate = minimumMana;
+                break;
+            default:
+                break;
+        }
+
+        //Validate
+        if ((valueToValidate - value) >= minValueToValidate)
         {
             return true;
         }
@@ -155,15 +205,31 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     }
 
     /// <summary>
-    /// Reduce Stamina 
+    /// Reduce Attribute 
+    /// 1)LP
+    /// 2)Stamina
+    /// 3)Mana
     /// </summary>
     /// <param name="StaminaPoints"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public virtual float ReduceStamina(float StaminaPoints, float value)
+    public virtual void ReduceAtribute(float value, int op)
     {
-        StaminaPoints -= value;
-        return StaminaPoints;
+        switch (op)
+        {
+            case 1:
+                lP -= value;
+                VerifyDeath();
+                break;
+            case 2:
+                stamina -= value;
+                break;
+            case 3:
+                mana -= value;
+                break;
+            default:
+                break;
+        }
     }
     /// <summary>
     /// Get every object in range

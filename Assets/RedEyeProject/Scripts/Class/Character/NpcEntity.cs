@@ -74,23 +74,22 @@ public class NpcEntity : CharacterEntity
             yield return new WaitForEndOfFrame();
         } while (true);
     }
-    protected override void OnAttack()
+    public override void OnAttack()
     {
         throw new System.NotImplementedException();
     }
 
-
-    protected override IEnumerator OnDash(Vector2 direction, float actionTime)
+    public override void OnMove(Vector2 direction)
     {
         throw new System.NotImplementedException();
     }
 
-    protected override void OnMove(Vector2 direction)
+    public override void OnUseSkill()
     {
         throw new System.NotImplementedException();
     }
 
-    protected override void OnUseSkill()
+    public override void OnDash(Skill dashSkill)
     {
         throw new System.NotImplementedException();
     }

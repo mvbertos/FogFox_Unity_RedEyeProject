@@ -1,5 +1,5 @@
 
-public enum Enum_SkillType
+public enum Enum_EffectType
 {
     Range,
     Buff,
