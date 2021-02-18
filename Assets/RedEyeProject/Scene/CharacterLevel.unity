@@ -289,6 +289,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ff937b7937aa447a0133676e6434ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &969230504 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8293863361632360231, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+  m_PrefabInstance: {fileID: 4012334086315241232}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1241127848
 GameObject:
   m_ObjectHideFlags: 0
@@ -2938,6 +2943,26 @@ PrefabInstance:
     - target: {fileID: 4012334086150885009, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: MeleeMaxRange.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: MeleeMaxRange.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: MeleeMaxRange.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: MeleeAttackPoint
+      value: 
+      objectReference: {fileID: 969230504}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: MeleeAttackRange
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}

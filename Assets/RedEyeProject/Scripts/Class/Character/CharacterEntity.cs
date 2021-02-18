@@ -33,6 +33,9 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
 
     //Combat
     [Header("Combat")]
+    public Transform MeleeAttackPoint;
+    public float MeleeAttackRange;
+    public Vector3 MeleeMaxRange;
     public Transform SkillParent;
     public List<Skill> m_SkillList = new List<Skill>();
     [HideInInspector]
@@ -88,7 +91,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         foreach (Skill item in m_SkillList)
         {
             print(item);
-            m_InstantiatedSkillList.Add(Instantiate<Skill>(item,SkillParent));
+            m_InstantiatedSkillList.Add(Instantiate<Skill>(item, SkillParent));
         }
     }
 
@@ -263,7 +266,10 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
 
         return objects;
     }
-
+    protected virtual Vector3 GetMouseWorldPosition(Vector3 mousePosition)
+    {
+        return Camera.main.ScreenToWorldPoint(mousePosition);
+    }
     /// <summary>
     /// Debug Ranges
     /// </summary>
@@ -272,6 +278,10 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         //Draw Interaction Circle
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(interactionPoint.position, interactionRange);
+
+        //Draw Melee Circle
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(MeleeAttackPoint.position, MeleeAttackRange);
     }
 
     /// <summary>
