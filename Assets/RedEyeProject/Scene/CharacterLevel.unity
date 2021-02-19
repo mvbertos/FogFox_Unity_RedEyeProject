@@ -167,6 +167,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &303086400 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 980373697816993192, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
+  m_PrefabInstance: {fileID: 980373698240988217}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &965698018
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,6 +370,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1336986640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1336986641}
+  m_Layer: 0
+  m_Name: NPCMeleeAttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1336986641
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336986640}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 303086400}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1506401036
 GameObject:
@@ -2851,6 +2886,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 980373697816993204, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
+      propertyPath: MeleeAttackPoint
+      value: 
+      objectReference: {fileID: 1336986641}
+    - target: {fileID: 980373697816993204, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
+      propertyPath: MeleeAttackRange
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 980373697816993207, guid: 0985ca3550e7446e18b2b490eb056be2, type: 3}
       propertyPath: m_TaskList.Array.size
       value: 3
@@ -2945,6 +2988,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: MeleeDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: MeleeCoolDown
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
       propertyPath: MeleeMaxRange.x
       value: 2
       objectReference: {fileID: 0}
@@ -2963,6 +3014,14 @@ PrefabInstance:
     - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
       propertyPath: MeleeAttackRange
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: PlayerInputs.MeleeFast
+      value: 323
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012334086150885010, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
+      propertyPath: PlayerInputs.MeleeStrong
+      value: 324
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa8b7c7433abfe27db695d82d8232bdc, type: 3}
