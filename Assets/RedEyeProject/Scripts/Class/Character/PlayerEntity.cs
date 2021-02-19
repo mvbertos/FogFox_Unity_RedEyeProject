@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerEntity : CharacterEntity
@@ -90,12 +91,7 @@ public class PlayerEntity : CharacterEntity
         //Dash 
         if (Input.GetKeyDown(PlayerInputs.Dash))
         {
-            foreach (Skill skill in m_InstantiatedSkillList)
-            {
-                if (skill.TryGetComponent<Skill_Dash>(out Skill_Dash dash)) { OnDash(dash); }
-            }
-
-            return;
+            OnDash(DashSkill.GetComponent<Skill_Dash>());
         }
 
         //Interactions!!!
@@ -109,14 +105,14 @@ public class PlayerEntity : CharacterEntity
 
         //Combat!!!
         if (characterState == Enum_CharacterState.Attacking) { return; }
-        
+
         if (Input.GetKeyDown(PlayerInputs.MeleeFast))
         {
-            StartCoroutine(OnAttack(MeleeCoolDown, MeleeDamage));
+            StartCoroutine(OnAttack(MeleeBasicAttack.Cooldown, MeleeBasicAttack.GetEffect(Enum_EffectType.Melee).EffectValue));
         }
         else if (Input.GetKeyDown(PlayerInputs.MeleeStrong))
         {
-            StartCoroutine(OnAttack(MeleeCoolDown, MeleeDamage));
+            StartCoroutine(OnAttack(MeleeBasicAttack.Cooldown, MeleeBasicAttack.GetEffect(Enum_EffectType.Melee).EffectValue));
         }
     }
 
@@ -144,9 +140,9 @@ public class PlayerEntity : CharacterEntity
     public override IEnumerator OnAttack(float coolDown, float Damage)
     {
         characterState = Enum_CharacterState.Attacking;
-        foreach (IDamageable damagables in DamageableObjectsOnRange(MeleeAttackPoint, MeleeAttackRange))
+        foreach (IDamageable damagables in DamageableObjectsOnRange(MeleeAttackPoint, MeleeBasicAttack.GetEffect(Enum_EffectType.Melee).EffectValue))
         {
-            damagables.OnTakeDamage(MeleeDamage);
+            damagables.OnTakeDamage(MeleeBasicAttack.GetEffect(Enum_EffectType.Melee).EffectValue);
         }
         yield return new WaitForSeconds(coolDown);
         characterState = Enum_CharacterState.Idle;

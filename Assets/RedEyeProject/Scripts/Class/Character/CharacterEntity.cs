@@ -34,10 +34,8 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
     //Combat
     [Header("Combat")]
     public Transform MeleeAttackPoint;
-    public float MeleeAttackRange;
     public Vector3 MeleeMaxRange;
-    public float MeleeDamage;
-    public float MeleeCoolDown;
+    public Skill MeleeBasicAttack;
     public Transform SkillParent;
     public List<Skill> m_SkillList = new List<Skill>();
     [HideInInspector]
@@ -56,6 +54,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
     {
         get { return _moveDirection; }
     }
+    public Skill DashSkill;
 
     [Header("Interaction")]
     [SerializeField]
@@ -84,6 +83,9 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
         //Setting up character
         characterState = Enum_CharacterState.Idle;
         SetupSkillList();
+        MeleeBasicAttack = GetSkillFromList(MeleeBasicAttack);
+        DashSkill = GetSkillFromList(DashSkill);
+
 
         //Start Regen
         StartCoroutine(RegenAttribute(staminaRegenTime, staminaRegen, 2));
@@ -92,7 +94,6 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
     {
         foreach (Skill item in m_SkillList)
         {
-            print(item);
             m_InstantiatedSkillList.Add(Instantiate<Skill>(item, SkillParent));
         }
     }
@@ -223,6 +224,22 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
     }
 
     /// <summary>
+    /// Return a skill from character skill list
+    /// </summary>
+    /// <param name="skill"></param>
+    /// <returns></returns>
+    public virtual Skill GetSkillFromList(Skill skill)
+    {
+        foreach (Transform child in SkillParent)
+        {
+            if (child.TryGetComponent<Skill>(out Skill childSkill))
+            {
+                if (childSkill.SkillName == skill.SkillName) return childSkill;
+            }
+        }
+        return null;
+    }
+    /// <summary>
     /// Reduce Attribute 
     /// 1)LP
     /// 2)Stamina
@@ -284,7 +301,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
 
         //Draw Melee Circle
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(MeleeAttackPoint.position, MeleeAttackRange);
+        Gizmos.DrawWireSphere(MeleeAttackPoint.position, MeleeBasicAttack.ContactRange);
     }
 
     /// <summary>

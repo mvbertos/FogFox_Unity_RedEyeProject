@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6732733400976410180}
-  - component: {fileID: 6732733400976410181}
+  - component: {fileID: -4246584806638539728}
   m_Layer: 0
-  m_Name: DashSkill
+  m_Name: PunchAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6732733400976410181
+--- !u!114 &-4246584806638539728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,16 +40,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 6732733400976410178}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37c2327c207da414287c64b0d6d72566, type: 3}
+  m_Script: {fileID: 11500000, guid: a5d3b6d69368fcc47bfabb3942bba0df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: BasicDash
+  skillName: BasicPunch
   Effects:
-  - EffectType: 3
-    EffectValue: 5
+  - EffectType: 2
+    EffectValue: 1
   AtributeCostType: 1
   Cost: 1
-  Cooldown: 0.5
+  Cooldown: 0.1
   ActionTime: 0.1
   ContactRange: 1
   RangeSprite: {fileID: 0}
