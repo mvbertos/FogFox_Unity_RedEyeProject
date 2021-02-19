@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class CharacterEntity : MonoBehaviour, IInteraction
+public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
 {
     //Atributes
     [Header("Atributes")]
@@ -36,6 +36,8 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     public Transform MeleeAttackPoint;
     public float MeleeAttackRange;
     public Vector3 MeleeMaxRange;
+    public float MeleeDamage;
+    public float MeleeCoolDown;
     public Transform SkillParent;
     public List<Skill> m_SkillList = new List<Skill>();
     [HideInInspector]
@@ -98,7 +100,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     //Abstract Methods to instantiate.
 
     public abstract void OnMove(Vector2 direction);
-    public abstract void OnAttack();
+    public abstract IEnumerator OnAttack(float coolDown, float Damage);
     public abstract void OnUseSkill();
     public abstract void OnDash(Skill dashSkill);
 
@@ -111,6 +113,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     { //it will verify character is dead or not
         if (lP < minimumLP)
         {
+            this.gameObject.SetActive(false);
             print("Dead");
         }
     }
@@ -290,7 +293,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
     /// <param name="point"></param>
     /// <param name="range"></param>
     /// <returns></returns>
-    public virtual IInteraction InteractableObjects(Transform point, float range)
+    public virtual IInteraction InteractableObjectOnRange(Transform point, float range)
     {
         foreach (GameObject value in GetAllObjectsInRange(point, range))
         {
@@ -301,7 +304,24 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
         }
         return null;
     }
-
+    /// <summary>
+    /// return all Damageable Objects On Range
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="range"></param>
+    /// <returns></returns>
+    public virtual List<IDamageable> DamageableObjectsOnRange(Transform point, float range)
+    {
+        List<IDamageable> values = new List<IDamageable>();
+        foreach (GameObject value in GetAllObjectsInRange(point, range))
+        {
+            if (value.TryGetComponent<IDamageable>(out IDamageable dobject))
+            {
+                values.Add(dobject);
+            }
+        }
+        return values;
+    }
     //Methods from Interact Interface
     public virtual void OnBeingInteract()
     {
@@ -310,11 +330,18 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction
 
     public virtual void OnInteract()
     {
-        IInteraction value = InteractableObjects(interactionPoint, interactionRange);
+        IInteraction value = InteractableObjectOnRange(interactionPoint, interactionRange);
 
         if (value != null)
         {
             value.OnBeingInteract();
         }
+    }
+
+    //Methods from Damagable Interface
+    public virtual void OnTakeDamage(float damage)
+    {
+        ReduceAtribute(damage, 1);
+        print(lP);
     }
 }

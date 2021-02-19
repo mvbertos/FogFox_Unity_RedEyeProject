@@ -9,18 +9,20 @@ public class PlayerEntity : CharacterEntity
 
     void Update()
     {
+        //Update MeleeAttackPoint
+        MeleeAttackPoint.localPosition = UpdateMeleeAttackPoint();
         //Receive Movement Input
         ReceivePlayeMovementInput();
-        UpdateMeleeAttackPoint();
     }
 
     /// <summary>
     /// It defines position to where the meleeAttackpoint shold be
     /// </summary>
-    private void UpdateMeleeAttackPoint()
+    private Vector3 UpdateMeleeAttackPoint()
     {
+
         Vector3 maxRange = MeleeMaxRange;
-        Vector3 mouseWorldPosition = GetMouseWorldPosition(Input.mousePosition);
+        Vector3 mouseWorldPosition = this.transform.position - GetMouseWorldPosition(Input.mousePosition);
         Vector3 meleePoint = MeleeAttackPoint.position;
         Vector3 newMeleePoint = new Vector3();
 
@@ -52,7 +54,7 @@ public class PlayerEntity : CharacterEntity
             newMeleePoint.y = mouseWorldPosition.y;
         }
 
-        MeleeAttackPoint.localPosition = newMeleePoint;
+        return Vector3.Scale(newMeleePoint, new Vector3(-1, -1, 1));
     }
 
     /// <summary>
@@ -106,21 +108,19 @@ public class PlayerEntity : CharacterEntity
         OnMove(_moveDirection);
 
         //Combat!!!
-
+        if (characterState == Enum_CharacterState.Attacking) { return; }
+        
         if (Input.GetKeyDown(PlayerInputs.MeleeFast))
         {
-            //Damage objects on range
+            StartCoroutine(OnAttack(MeleeCoolDown, MeleeDamage));
         }
         else if (Input.GetKeyDown(PlayerInputs.MeleeStrong))
         {
-            //Damage objects on range
+            StartCoroutine(OnAttack(MeleeCoolDown, MeleeDamage));
         }
     }
 
-    public override void OnAttack()
-    {
-        throw new System.NotImplementedException();
-    }
+
 
     public override void OnMove(Vector2 direction)
     {
@@ -139,5 +139,16 @@ public class PlayerEntity : CharacterEntity
     public override void OnDash(Skill dashSkill)
     {
         StartCoroutine(dashSkill.GetComponent<Skill_Dash>().OnDash(this.gameObject.GetComponent<CharacterEntity>()));
+    }
+
+    public override IEnumerator OnAttack(float coolDown, float Damage)
+    {
+        characterState = Enum_CharacterState.Attacking;
+        foreach (IDamageable damagables in DamageableObjectsOnRange(MeleeAttackPoint, MeleeAttackRange))
+        {
+            damagables.OnTakeDamage(MeleeDamage);
+        }
+        yield return new WaitForSeconds(coolDown);
+        characterState = Enum_CharacterState.Idle;
     }
 }

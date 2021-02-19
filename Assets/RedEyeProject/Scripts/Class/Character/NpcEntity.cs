@@ -45,7 +45,7 @@ public class NpcEntity : CharacterEntity
                         if (task.TaskObject == null) { yield return null; } //TaskObject is null
                         if (!task.TaskObject.TryGetComponent<IInteraction>(out IInteraction io)) { yield return null; }//Task object has IInteraction interface
 
-                        if (InteractableObjects(interactionPoint, interactionRange) == io)
+                        if (InteractableObjectOnRange(interactionPoint, interactionRange) == io)
                         {
                             io.OnBeingInteract();
                             task.State = Enum_TaskState.Completed;
@@ -74,10 +74,6 @@ public class NpcEntity : CharacterEntity
             yield return new WaitForEndOfFrame();
         } while (true);
     }
-    public override void OnAttack()
-    {
-        throw new System.NotImplementedException();
-    }
 
     public override void OnMove(Vector2 direction)
     {
@@ -90,6 +86,11 @@ public class NpcEntity : CharacterEntity
     }
 
     public override void OnDash(Skill dashSkill)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override IEnumerator OnAttack(float coolDown, float Damage)
     {
         throw new System.NotImplementedException();
     }
