@@ -45,7 +45,7 @@ public class NpcEntity : CharacterEntity
                         if (task.TaskObject == null) { yield return null; } //TaskObject is null
                         if (!task.TaskObject.TryGetComponent<IInteraction>(out IInteraction io)) { yield return null; }//Task object has IInteraction interface
 
-                        if (InteractableObjectOnRange(interactionPoint, interactionRange) == io)
+                        if (InteractableObjectOnRange(InteractionPoint, InteractionRange) == io)
                         {
                             io.OnBeingInteract();
                             task.State = Enum_TaskState.Completed;
@@ -56,7 +56,10 @@ public class NpcEntity : CharacterEntity
 
                     } while (task.State != Enum_TaskState.Completed);
                     break;
+                    
+                //Idle
                 case Enum_TaskType.Idle:
+
                     _AIDestinationSetter.target = task.Position;
 
                     do

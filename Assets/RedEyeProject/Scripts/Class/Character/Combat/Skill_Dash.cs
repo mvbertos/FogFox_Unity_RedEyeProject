@@ -12,10 +12,10 @@ public class Skill_Dash : Skill
         }
         else
         {
-            Enum_CharacterState defaultState = character.characterState;
+            Enum_CharacterState defaultState = character.CharacterState;
             float dashExecutionTime = Time.time + ActionTime;
 
-            if (character.characterState != Enum_CharacterState.Dashing && character.VerifyAtribute(Cost, 2))//Start Dash
+            if (character.CharacterState != Enum_CharacterState.Dashing && character.VerifyAtribute(Cost, 2))//Start Dash
             {
 
                 character.ReduceAtribute(Cost, 2);
@@ -25,8 +25,8 @@ public class Skill_Dash : Skill
                     {
                         if (effect.EffectType == Enum_EffectType.Travel)
                         {
-                            character.characterState = Enum_CharacterState.Dashing;
-                            character.OnMove(character.moveDirection * effect.EffectValue);
+                            character.UpdateCharacterState(Enum_CharacterState.Dashing);
+                            character.OnMove(character.MoveDirection * effect.EffectValue);
                             executing = true;
                         }
                     }
@@ -37,7 +37,7 @@ public class Skill_Dash : Skill
             dashExecutionTime = 0;
             yield return new WaitForSeconds(Cooldown);
 
-            character.characterState = defaultState;
+            character.UpdateCharacterState(defaultState);
             executing = false;
         }
     }

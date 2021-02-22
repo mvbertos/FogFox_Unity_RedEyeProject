@@ -11,7 +11,7 @@ public class PlayerEntity : CharacterEntity
     void Update()
     {
         //Update MeleeAttackPoint
-        MeleeAttackPoint.localPosition = UpdateMeleeAttackPoint();
+        InteractionPoint.localPosition = UpdateMeleeAttackPoint();
         //Receive Movement Input
         ReceivePlayeMovementInput();
     }
@@ -22,9 +22,9 @@ public class PlayerEntity : CharacterEntity
     private Vector3 UpdateMeleeAttackPoint()
     {
 
-        Vector3 maxRange = MeleeMaxRange;
+        Vector3 maxRange = InteractionMaxDistance;
         Vector3 mouseWorldPosition = this.transform.position - GetMouseWorldPosition(Input.mousePosition);
-        Vector3 meleePoint = MeleeAttackPoint.position;
+        Vector3 meleePoint = InteractionPoint.position;
         Vector3 newMeleePoint = new Vector3();
 
         //Defines limit for X position
@@ -66,26 +66,26 @@ public class PlayerEntity : CharacterEntity
     {
         //Movementation!!!
 
-        _moveDirection = new Vector2();
+        moveDirection = new Vector2();
 
         //Vertical Movementation
         if (Input.GetKey(PlayerInputs.MoveUp))
         {
-            _moveDirection.y = 1;
+            moveDirection.y = 1;
         }
         else if (Input.GetKey(PlayerInputs.MoveDown))
         {
-            _moveDirection.y = -1;
+            moveDirection.y = -1;
         }
 
         //Horizontal Movementation
         if (Input.GetKey(PlayerInputs.MoveLeft))
         {
-            _moveDirection.x = -1;
+            moveDirection.x = -1;
         }
         else if (Input.GetKey(PlayerInputs.MoveRight))
         {
-            _moveDirection.x = 1;
+            moveDirection.x = 1;
         }
 
         //Dash 
@@ -101,7 +101,7 @@ public class PlayerEntity : CharacterEntity
         {
             OnInteract();
         }
-        OnMove(_moveDirection);
+        OnMove(moveDirection);
 
         //Combat!!!
         if (characterState == Enum_CharacterState.Attacking) { return; }
@@ -122,7 +122,7 @@ public class PlayerEntity : CharacterEntity
     {
         direction *= moveSpeed;
 
-        rigidbody.velocity = direction;
+        Rigidbody.velocity = direction;
 
         characterState = Enum_CharacterState.Walking;
     }
@@ -140,7 +140,7 @@ public class PlayerEntity : CharacterEntity
     public override IEnumerator OnAttack(float coolDown, float Damage)
     {
         characterState = Enum_CharacterState.Attacking;
-        foreach (IDamageable damagables in DamageableObjectsOnRange(MeleeAttackPoint, MeleeBasicAttack.GetEffect(Enum_EffectType.Melee).EffectValue))
+        foreach (IDamageable damagables in DamageableObjectsOnRange(InteractionPoint, MeleeBasicAttack.GetEffect(Enum_EffectType.Melee).EffectValue))
         {
             damagables.OnTakeDamage(MeleeBasicAttack.GetEffect(Enum_EffectType.Melee).EffectValue);
         }

@@ -1,76 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RedEye.Character.Basics;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
 {
-    //Atributes
-    [Header("Atributes")]
-    [SerializeField]
-    protected float lP = 5;
-    [SerializeField]
-    protected float maxLP = 5;
-    [SerializeField]
-    protected float minimumLP = 0;
-    [SerializeField]
-    protected float stamina = 5;
-    [SerializeField]
-    protected float maxStamina = 5;
-    [SerializeField]
-    protected float minimumStamina = 0;
-    [SerializeField]
-    protected float mana = 5;
-    [SerializeField]
-    protected float maxMana = 5;
-    protected float minimumMana = 0;
+    //Attributes
+    protected Enum_CharacterState characterState;
+    public Enum_CharacterState CharacterState { get { return characterState; } }
+    [SerializeField] protected Struct_BasicAttributes attributes;
+    public Struct_BasicAttributes Attributes { get { return attributes; } }
 
+    //Attributes Regeneration
     [Header("Regen Values")]
-    [SerializeField]
-    protected float staminaRegen = 2;
-    [SerializeField]
-    protected float staminaRegenTime = 1;
+    [SerializeField] protected float staminaRegen = 2;
+    public float StaminaRegen { get { return staminaRegen; } }
 
-    //Combat
-    [Header("Combat")]
-    public Transform MeleeAttackPoint;
-    public Vector3 MeleeMaxRange;
-    public Skill MeleeBasicAttack;
-    public Transform SkillParent;
-    public List<Skill> m_SkillList = new List<Skill>();
-    [HideInInspector]
-    public List<Skill> m_InstantiatedSkillList = new List<Skill>();
+    [SerializeField] protected float staminaRegenTime = 1;
+    public float StaminaRegenTime { get { return staminaRegenTime; } }
 
+    //interactions
+    [Header("Interactions")]
+    [SerializeField] private Transform interactionPoint;
+    public Transform InteractionPoint { get { return interactionPoint; } }
+    [SerializeField] private Vector3 interactionMaxDistance;
+    public Vector3 InteractionMaxDistance { get { return interactionMaxDistance; } }
+    [SerializeField] private float interactionRange = 1;
+    public float InteractionRange { get { return interactionRange; } }
 
     //Movementation
-    [HideInInspector]
-    public Enum_CharacterState characterState;
-
     [Header("Movementation")]
-    [SerializeField]
-    protected float moveSpeed = 5;
-    protected Vector2 _moveDirection = new Vector2();
-    public Vector2 moveDirection
-    {
-        get { return _moveDirection; }
-    }
-    public Skill DashSkill;
+    [SerializeField] protected float moveSpeed = 5;
+    protected Vector2 moveDirection = new Vector2();
+    public Vector2 MoveDirection { get { return moveDirection; } }
 
-    [Header("Interaction")]
-    [SerializeField]
-    protected Transform interactionPoint;
-    [SerializeField]
-    protected float interactionRange;
+    [Header("Skills")]
+    [SerializeField] protected Skill MeleeBasicAttack;
+    [SerializeField] protected Skill DashSkill;
+    [SerializeField] private Transform skillParent;
+    public Transform SkillParent { get { return skillParent; } }
+
+    protected List<Skill> m_SkillList = new List<Skill>();
+    protected List<Skill> m_InstantiatedSkillList = new List<Skill>();
 
     //Physics
-    protected Rigidbody2D rigidbody;
-    public Rigidbody2D Rigidbody
-    {
-        get
-        {
-            return rigidbody;
-        }
-    }
+    private Rigidbody2D rigidbody;
+    public Rigidbody2D Rigidbody { get { return rigidbody; } }
 
     //Default Methods
     private void Awake()
@@ -83,19 +59,23 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
         //Setting up character
         characterState = Enum_CharacterState.Idle;
         SetupSkillList();
-        MeleeBasicAttack = GetSkillFromList(MeleeBasicAttack);
-        DashSkill = GetSkillFromList(DashSkill);
-
 
         //Start Regen
         StartCoroutine(RegenAttribute(staminaRegenTime, staminaRegen, 2));
     }
+
+    //Initialization Methods
+    /// <summary>
+    /// it setup skill list with all skills present on skill parent transform
+    /// </summary>
     private void SetupSkillList()
     {
         foreach (Skill item in m_SkillList)
         {
             m_InstantiatedSkillList.Add(Instantiate<Skill>(item, SkillParent));
         }
+        if (m_InstantiatedSkillList.Contains(MeleeBasicAttack)) { MeleeBasicAttack = Instantiate<Skill>(MeleeBasicAttack, SkillParent); }
+        if (m_InstantiatedSkillList.Contains(DashSkill)) { DashSkill = Instantiate<Skill>(DashSkill, SkillParent); }
     }
 
     //Abstract Methods to instantiate.
@@ -106,13 +86,19 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
     public abstract void OnDash(Skill dashSkill);
 
     //Virtual methods to instance
-
+    /// <summary>
+    /// It updates the state of this character
+    /// </summary>
+    public virtual void UpdateCharacterState(Enum_CharacterState newState)
+    {
+        characterState = newState;
+    }
     /// <summary>
     /// It will verify if character is dead
     /// </summary>
     protected virtual void VerifyDeath()
     { //it will verify character is dead or not
-        if (lP < minimumLP)
+        if (attributes.lP < attributes.minimumLP)
         {
             this.gameObject.SetActive(false);
             print("Dead");
@@ -166,13 +152,13 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
             case 1:
                 break;
             case 2:
-                if (stamina + value <= maxStamina)
+                if (attributes.stamina + value <= attributes.maxStamina)
                 {
-                    stamina += value;
+                    attributes.stamina += value;
                 }
                 else
                 {
-                    stamina = maxStamina;
+                    attributes.stamina = attributes.maxStamina;
                 }
                 break;
             case 3:
@@ -197,16 +183,16 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
         switch (op)
         {
             case 1:
-                valueToValidate = lP;
-                minValueToValidate = minimumLP;
+                valueToValidate = attributes.lP;
+                minValueToValidate = attributes.minimumLP;
                 break;
             case 2:
-                valueToValidate = stamina;
-                minValueToValidate = minimumStamina;
+                valueToValidate = attributes.stamina;
+                minValueToValidate = attributes.minimumStamina;
                 break;
             case 3:
-                valueToValidate = mana;
-                minValueToValidate = minimumMana;
+                valueToValidate = attributes.mana;
+                minValueToValidate = attributes.minimumMana;
                 break;
             default:
                 break;
@@ -253,14 +239,14 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
         switch (op)
         {
             case 1:
-                lP -= value;
+                attributes.lP -= value;
                 VerifyDeath();
                 break;
             case 2:
-                stamina -= value;
+                attributes.stamina -= value;
                 break;
             case 3:
-                mana -= value;
+                attributes.mana -= value;
                 break;
             default:
                 break;
@@ -301,7 +287,7 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
 
         //Draw Melee Circle
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(MeleeAttackPoint.position, MeleeBasicAttack.ContactRange);
+        Gizmos.DrawWireSphere(interactionPoint.position, MeleeBasicAttack.ContactRange);
     }
 
     /// <summary>
@@ -359,6 +345,6 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
     public virtual void OnTakeDamage(float damage)
     {
         ReduceAtribute(damage, 1);
-        print(lP);
+        print(attributes.lP);
     }
 }
