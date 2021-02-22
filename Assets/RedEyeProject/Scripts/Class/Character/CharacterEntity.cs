@@ -345,6 +345,5 @@ public abstract class CharacterEntity : MonoBehaviour, IInteraction, IDamageable
     public virtual void OnTakeDamage(float damage)
     {
         ReduceAtribute(damage, 1);
-        print(attributes.lP);
     }
 }

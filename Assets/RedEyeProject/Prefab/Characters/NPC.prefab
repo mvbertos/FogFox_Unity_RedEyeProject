@@ -117,27 +117,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68266f186ec9bc44ea470ebeaaeb9970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lP: 5
-  maxLP: 5
-  minimumLP: 0
-  stamina: 5
-  maxStamina: 5
-  minimumStamina: 0
-  mana: 5
-  maxMana: 5
+  attributes:
+    lP: 5
+    maxLP: 5
+    minimumLP: 0
+    stamina: 5
+    maxStamina: 5
+    minimumStamina: 0
+    mana: 5
+    maxMana: 5
+    minimumMana: 0
   staminaRegen: 2
   staminaRegenTime: 1
-  MeleeAttackPoint: {fileID: 1336986641}
-  MeleeMaxRange: {x: 0, y: 0, z: 0}
-  MeleeBasicAttack: {fileID: -4246584806638539728, guid: 0a95ce233b13acb40822b3ce90e0734f, type: 3}
-  SkillParent: {fileID: 0}
-  m_SkillList: []
-  m_InstantiatedSkillList: []
-  characterState: 0
-  moveSpeed: 5
-  DashSkill: {fileID: 6732733400976410181, guid: 6bd3ca3004e8fc347852abf8273ae5eb, type: 3}
   interactionPoint: {fileID: 980373699020077400}
+  interactionMaxDistance: {x: 0, y: 0, z: 0}
   interactionRange: 1
+  moveSpeed: 5
+  MeleeBasicAttack: {fileID: -4246584806638539728, guid: 0a95ce233b13acb40822b3ce90e0734f, type: 3}
+  DashSkill: {fileID: 6732733400976410181, guid: 6bd3ca3004e8fc347852abf8273ae5eb, type: 3}
+  skillParent: {fileID: 0}
 --- !u!114 &980373697816993207
 MonoBehaviour:
   m_ObjectHideFlags: 0

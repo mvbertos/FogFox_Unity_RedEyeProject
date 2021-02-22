@@ -191,24 +191,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e580b07076a485442991ed3489a36831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lP: 5
-  maxLP: 5
-  minimumLP: 0
-  stamina: 5
-  maxStamina: 5
-  minimumStamina: 0
-  mana: 5
-  maxMana: 5
+  attributes:
+    lP: 5
+    maxLP: 5
+    minimumLP: 0
+    stamina: 5
+    maxStamina: 5
+    minimumStamina: 0
+    mana: 5
+    maxMana: 5
+    minimumMana: 0
   staminaRegen: 2
   staminaRegenTime: 1
-  SkillParent: {fileID: 1289278194}
-  m_SkillList:
-  - {fileID: 6732733400976410181, guid: 6bd3ca3004e8fc347852abf8273ae5eb, type: 3}
-  m_InstantiatedSkillList: []
-  characterState: 0
-  moveSpeed: 5
   interactionPoint: {fileID: 4012334085431534893}
+  interactionMaxDistance: {x: 1, y: 1, z: 1}
   interactionRange: 1
+  moveSpeed: 5
+  MeleeBasicAttack: {fileID: -4246584806638539728, guid: 0a95ce233b13acb40822b3ce90e0734f, type: 3}
+  DashSkill: {fileID: 6732733400976410181, guid: 6bd3ca3004e8fc347852abf8273ae5eb, type: 3}
+  skillParent: {fileID: 1289278194}
   PlayerInputs:
     MoveUp: 119
     MoveDown: 115
@@ -216,6 +217,8 @@ MonoBehaviour:
     MoveRight: 100
     Dash: 304
     Interact: 102
+    MeleeFast: 323
+    MeleeStrong: 324
 --- !u!50 &4012334086150885011
 Rigidbody2D:
   serializedVersion: 4

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
 public class TimePeriodController : MonoBehaviour
@@ -8,14 +9,15 @@ public class TimePeriodController : MonoBehaviour
     public Enum_TimePeriod CurrentTimePeriod;//ACtual world period
     public List<Struct_TimePeriod> m_PeriodInfo = new List<Struct_TimePeriod>();//PeriodInfo
     private Dictionary<Enum_TimePeriod, Struct_TimePeriod> m_PeriodInfoDictionary = new Dictionary<Enum_TimePeriod, Struct_TimePeriod>();
-    public GameObject worldGrid;//Focused on filter the colors of the world
+    public Light2D GlobalLight;//Focused on filter the colors of the world
 
-    private void Start() {
+    private void Start()
+    {
 
         //Load m_PeriodInfoDictionary
         foreach (Struct_TimePeriod item in m_PeriodInfo)
         {
-            m_PeriodInfoDictionary.Add(item.period,item);
+            m_PeriodInfoDictionary.Add(item.period, item);
         }
     }
     /// <summary>
@@ -24,7 +26,7 @@ public class TimePeriodController : MonoBehaviour
     void FixedUpdate()
     {
         //TODO:Delete after finish debug
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             ChangeTimePeriod();
         }
@@ -64,13 +66,12 @@ public class TimePeriodController : MonoBehaviour
     private void UpdateAmbient()
     {
 
-        worldGrid.TryGetComponent<SpriteRenderer>(out SpriteRenderer worldPallet);
 
-        if (!worldPallet) { return; } // Check if worldPallet is null.
+        if (!GlobalLight) { return; } // Check if worldPallet is null.
 
-        m_PeriodInfoDictionary.TryGetValue(CurrentTimePeriod,out Struct_TimePeriod periodStruct);
+        m_PeriodInfoDictionary.TryGetValue(CurrentTimePeriod, out Struct_TimePeriod periodStruct);
 
-        worldPallet.color = periodStruct.periodColor;
+        GlobalLight.color = periodStruct.periodColor;
     }
 
     //Maybe set this on StoreEntitys Script
