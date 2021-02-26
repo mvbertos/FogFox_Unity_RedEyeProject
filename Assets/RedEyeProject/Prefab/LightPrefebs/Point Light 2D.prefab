@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2517208386403701170}
   - component: {fileID: 6037734372308321410}
+  - component: {fileID: 51557250}
   m_Layer: 0
   m_Name: Point Light 2D
   m_TagString: Untagged
@@ -58,8 +59,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensity: 0
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 20
-  m_PointLightOuterRadius: 20
+  m_PointLightInnerRadius: 1000
+  m_PointLightOuterRadius: 1000
   m_PointLightDistance: 3
   m_PointLightQuality: 1
   m_ShapeLightParametricSides: 5
@@ -72,3 +73,17 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &51557250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162154152927975360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6818bfbc3aa93ab4ab69c59e3d165cc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShadowColor: {r: 0, g: 0, b: 0, a: 0.5529412}
+  LightComponent: {fileID: 0}
