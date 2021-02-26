@@ -46,10 +46,10 @@ MonoBehaviour:
   skillName: BasicDash
   Effects:
   - EffectType: 3
-    EffectValue: 5
+    EffectValue: 2
   AtributeCostType: 1
   Cost: 1
   Cooldown: 0.5
-  ActionTime: 0.1
+  ActionTime: 1
   ContactRange: 1
   RangeSprite: {fileID: 0}

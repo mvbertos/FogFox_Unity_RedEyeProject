@@ -21,6 +21,10 @@ public abstract class Skill : MonoBehaviour
     //Execution
     public Sprite RangeSprite;
     protected bool executing = false;
+    private void Awake()
+    {
+        executing = false;
+    }
     public virtual Struct_Effect GetEffect(Enum_EffectType effectType)
     {
         foreach (Struct_Effect effect in Effects)
